@@ -41,15 +41,15 @@ console.log(answer);
         <div className='container h-[80%] w-full'>
           <div className='h-full w-full p-5 text-left overflow-x-hidden'>
             <ul>
-              {
-                prev.map((item, index) => {
-                  if(item.type === "q"){
-                    return <li key={index} className='text-right'><Answers answer={item.text} index={0} /></li>
-                  }else{
-                    return item.text.map((ans,index2) => <li key={`${index}-${index2}`}><Answers answer={ans} index={index2} /></li>)
-                  }
-                })
-              }
+              {answer.map((item, index) => {
+                if (item.type === "q") {
+                  return <li key={index} className='text-right'><Answers answer={item.text} index={0} /></li>
+                } else {
+                  return item.text.map((ans, index2) => (
+                    <li key={`${index}-${index2}`}><Answers answer={ans} index={index2} /></li>
+                  ))
+                }
+              })}
               {/* {answer.map((item, index) => (
                 
                 
