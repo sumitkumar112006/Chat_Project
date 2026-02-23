@@ -1,1 +1,5 @@
-export const URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=AIzaSyAH48A4vAPn8Sukver6rwCN80evGsuJD1c"
+// In production, the React app is served from the same server as the API
+// So we don't need to specify a different base URL
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || (
+    import.meta.env.PROD ? '' : "http://localhost:3001"
+)

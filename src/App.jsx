@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import './App.css'
-import { URL } from './constants'
+import { API_BASE_URL } from './constants'
 import axios from 'axios'
 import Answers from './components/Answers'
 
@@ -11,24 +11,24 @@ function App() {
   const [prev, setprev] = useState([])
 
   const payload = {
-    contents: [{
-      parts: [{
-        text: question,
-      }],
-    }],
+    question: question,
   }
 
   const getAnswer = async () => {
-    const response = await axios.post(URL, payload)
-    let data = response?.data?.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
-    data = data.split(/\r?\n/).map(item => item.trim()).filter(Boolean).map(line => line.replace(/^\d+\.\s+/, '')) // "1. " remove
-      .map(line => line.replace(/^\*\s+/, ''));   // bullet "* " remove only at start
-    setAnswer(prev => [...prev, { type: "q", text: question }, { type: "a", text: data }])
-    setprev(prev)
-
+    try {
+      const response = await axios.post(`${API_BASE_URL}/api/chat`, payload)
+      let data = response?.data?.answer ?? '';
+      data = data.split(/\r?\n/).map(item => item.trim()).filter(Boolean).map(line => line.replace(/^\d+\.\s+/, '')) // "1. " remove
+        .map(line => line.replace(/^\*\s+/, ''));   // bullet "* " remove only at start
+      setAnswer(prev => [...prev, { type: "q", text: question }, { type: "a", text: data }])
+      setprev(prev)
+    } catch (error) {
+      console.error('Error fetching answer:', error)
+      alert('Failed to get answer. Make sure the server is running on port 3001.')
+    }
   }
 
-console.log(answer);
+  console.log(answer);
 
   return (
     <div className='grid grid-cols-5 h-screen text-center text-zinc-300'>
@@ -39,6 +39,10 @@ console.log(answer);
       <div className='col-span-4 flex flex-col justify-between p-10'>
 
         <div className='container h-[80%] w-full'>
+          <div>
+            <h1>Hi Rishika</h1>
+            <h3>How can i assist you today</h3>
+          </div>
           <div className='h-full w-full p-5 text-left overflow-x-hidden'>
             <ul>
               {answer.map((item, index) => {
@@ -46,7 +50,7 @@ console.log(answer);
                   return <li key={index} className='text-right'><Answers answer={item.text} index={0} /></li>
                 } else {
                   return item.text.map((ans, index2) => (
-                    <li key={`${index}-${index2}`}><Answers answer={ans} index={index2} /></li>
+                    <li key={`${index}-${index2}`}><Answers answer={ans} index={index2} className="text-left mr-[25%]" /></li>
                   ))
                 }
               })}
