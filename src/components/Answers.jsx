@@ -1,34 +1,43 @@
-import React, { useEffect, useState } from 'react'
-import { checkHeading, replaceHeadingStars } from '../healper';
+import React from 'react'
+import { parseAnswerLine } from '../healper'
 
-const Answers = ({ answer, index }) => {
+const Answers = ({ answer, isQuestion = false }) => {
+  if (isQuestion) {
+    return (
+      <div>
+        <span className='font-bold'>{answer}</span>
+      </div>
+    )
+  }
 
-  const [heading, setHeading] = useState(false);
-  const [ans, setAns] = useState(answer)
+  const parsed = parseAnswerLine(answer)
 
+  if (parsed.type === 'sectionHeading') {
+    return (
+      <div>
+        <span className='text-xl font-semibold text-zinc-100'>{parsed.text}</span>
+      </div>
+    )
+  }
 
+  if (parsed.type === 'boldLabel') {
+    return (
+      <div className='pl-2'>
+        <span className='font-semibold'>{parsed.label}:</span>{' '}
+        <span>{parsed.content}</span>
+      </div>
+    )
+  }
 
-  useEffect(() => {
-    if (checkHeading(answer)) {
-      setHeading(true);
-      setAns(replaceHeadingStars(answer));
-    } else {
-      setHeading(false);
-      setAns(answer);
-    }
-    console.log(index, answer, checkHeading(answer));
-  }, [answer]);
-  ;
+  if (parsed.type === 'heading') {
+    return (
+      <div>
+        <span className='text-lg text-zinc-100'>{parsed.text}</span>
+      </div>
+    )
+  }
 
-  return (
-    <div>
-      {
-        index == 0 ? <span className='font-bold'>{ans}</span>
-          : heading ? <span className='text-xl text-zinc-100'>{ans}</span>
-            : <span className='pl-5'>{ans}</span>
-      }
-    </div>
-  )
+  return <div><span className='pl-5'>{parsed.text}</span></div>
 }
 
 export default Answers
