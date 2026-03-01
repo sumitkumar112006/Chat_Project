@@ -10,6 +10,13 @@ function App() {
   const [answer, setAnswer] = useState([])
   const [recentHistory, setRecentHistory] = useState(JSON.parse(localStorage.getItem('History')) || [])
 
+  const deleteHistoryItem = (id) => {
+    const updated = recentHistory.filter((_, index) => index !== id)
+    setRecentHistory(updated)
+    localStorage.setItem('History', JSON.stringify(updated))
+  }
+
+
   const getAnswer = async () => {
 
     
@@ -38,6 +45,10 @@ function App() {
         },
       })
 
+      
+
+      
+
       const raw = response?.data?.candidates?.[0]?.content?.parts?.map((p) => p?.text ?? '').join('\n') ?? ''
       const lines = Array.isArray(raw) ? raw : String(raw).split(/\r?\n/)
       const data = lines
@@ -56,7 +67,7 @@ function App() {
 
   return (
     <div className='grid grid-cols-5 h-screen  text-zinc-300'>
-      <div className='col-span-1 h-full bg-zinc-800 p-5 flex flex-col gap-10 fixed' id='history'>
+      <div className='col-span-1 h-full bg-zinc-800 p-5 flex flex-col gap-10' id='history'>
         {/* <input type="checkbox" id='check' />
         <div>
           <label htmlFor="check">
@@ -67,18 +78,20 @@ function App() {
         <div className=''>
           <ul >
             {
-              recentHistory.map((el) => (
-                <li><History history={el} /></li>
+              recentHistory.map((el, index) => (
+                <li key={index}>
+                  <History history={el} id={index} onDelete={deleteHistoryItem} />
+                </li>
               ))
             }
           </ul>
         </div>
       </div>
 
-      <div className='col-span-5 text-center flex flex-col justify-between p-10 '>
-        <div className='container h-[80%] w-full pb-12 pl-60' id='container'>
-          <div>
-            <h1>Hi Rishika</h1>
+      <div className='col-span-4 text-center flex flex-col justify-between p-10 '>
+        <div className='container h-[80%] w-full pb-12' id='container'>
+          <div className='items-center'>
+            <h1>Hi Sumit</h1>
             <h3>How can i assist you today</h3>
           </div>
           <div className='h-full w-full p-5 text-left'>
@@ -102,9 +115,7 @@ function App() {
               })}
             </ul>
           </div>
-        </div>
-
-        <div className='input bg-zinc-800 w-1/2 h-16 items-center m-auto rounded-full border-zinc-700 flex justify-between px-10 shadow-black shadow-lg fixed bottom-5 left-[25%]' id='search'>
+          <div className='input bg-zinc-800 w-1/2 h-16 items-center m-auto rounded-full border-zinc-700 flex justify-between px-10 shadow-black shadow-lg fixed bottom-5 left-[25%] mb-20'  id='search'>
           <input
             type='text'
             placeholder='Ask me anything...'
@@ -129,6 +140,9 @@ function App() {
             Ask
           </button>
         </div>
+        </div>
+
+        
       </div>
     </div>
   )
