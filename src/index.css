@@ -16,18 +16,23 @@ div::-webkit-scrollbar {
     #search {
         transform: scale(0.9, 0.8);
         margin: auto;
-        margin-left: -50px;
+        margin-left: -80px;
         margin-bottom: 150px;
-        width: 80%;
+        width: 90%;
     }
 }
 
-@media(max-width:440px) {
+@media (max-width:440px) {
     #history {
         display: none;
-        
     }
-    #container {
-        padding-left: 0px;
+    .main-container {
+        width: 100vw;
+        align-items: center;
+        padding: 5px;
+    }
+    .container {
+        padding-top: 1.5rem;
     }
 }
+

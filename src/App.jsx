@@ -88,7 +88,7 @@ function App() {
         </div>
       </div>
 
-      <div className='col-span-4 text-center flex flex-col justify-between p-10 '>
+      <div className='main-container col-span-4 text-center flex flex-col justify-between p-10 '>
         <div className='container h-[80%] w-full pb-12' id='container'>
           <div className='items-center'>
             <h1>Hi Sumit</h1>
@@ -115,7 +115,7 @@ function App() {
               })}
             </ul>
           </div>
-          <div className='input bg-zinc-800 w-1/2 h-16 items-center m-auto rounded-full border-zinc-700 flex justify-between px-10 shadow-black shadow-lg fixed bottom-5 left-[25%] mb-20'  id='search'>
+          <div className='input bg-zinc-800 w-1/2 h-16 items-center m-auto rounded-full border-zinc-700 flex justify-between px-10 shadow-black shadow-lg fixed bottom-5 left-[25%] mb-10'  id='search'>
           <input
             type='text'
             placeholder='Ask me anything...'
